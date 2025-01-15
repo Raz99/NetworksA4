@@ -1,0 +1,4 @@
+https://www.tutorialspoint.com/c_standard_library/c_function_exit.htm - exit(1)
+https://en.wikipedia.org/wiki/IPv6_packet - wikipedia page of IPv6
+https://www.imperva.com/learn/performance/time-to-live-ttl/ - info about ttl & size of ttl
+ping.c & ping.h - by Roy the Maniac
