@@ -1,3 +1,5 @@
+# REMARK: We used the following Makefile provided as a refernce material available on the Moodle course, according to section 3 in the assignment.
+
 #######################################
 # 	Makefile for the ping program.    #
 #	Made by: Roy Simanovich.          #
