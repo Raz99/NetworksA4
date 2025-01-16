@@ -196,6 +196,7 @@ void handle_sigint(int signum)
 {
     (void)signum; // Explicitly mark parameter as unused
     keep_running = 0;
+    display_statistics(signum);
 }
 
 int main(int argc, char *argv[])
@@ -423,7 +424,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    display_statistics(0); // Display statistics
+    if(keep_running) {
+        display_statistics(0); // Display statistics
+    }
 
     // Close the socket and return 0 to the operating system.
     close(sock);
