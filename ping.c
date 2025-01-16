@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
 
             else if (options.type == 6)
             {
-                struct sockaddr_in6 source_addr; // Tempor                               ary structure to store the source address of the ICMPv6 reply packet.
+                struct sockaddr_in6 source_addr; // Temporary structure to store the source address of the ICMPv6 reply packet.
                 char addr_str[46];               // Buffer to store the source address as a string
 
                 // Receive the ICMPv6 reply packet
