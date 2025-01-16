@@ -191,14 +191,6 @@ int parse_arguments(int argc, char *argv[], struct ping_options *options)
     return 0;
 }
 
-// Signal handler for SIGINT
-void handle_sigint(int signum)
-{
-    (void)signum; // Explicitly mark parameter as unused
-    keep_running = 0;
-    display_statistics(signum);
-}
-
 int main(int argc, char *argv[])
 {
     if (parse_arguments(argc, argv, &options) != 0)
@@ -207,7 +199,7 @@ int main(int argc, char *argv[])
     }
 
     // Set up signal handler for SIGINT (Ctrl+C)
-    signal(SIGINT, handle_sigint);
+    signal(SIGINT, display_statistics);
 
     // Structure to store the destination address.
     // Even though we are using raw sockets, creating from zero the IP header is a bit complex,
@@ -425,7 +417,7 @@ int main(int argc, char *argv[])
     }
 
     if(keep_running) {
-        display_statistics(0); // Display statistics
+        display_statistics(SIGINT); // Display statistics
     }
 
     // Close the socket and return 0 to the operating system.
