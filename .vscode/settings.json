@@ -1,0 +1,10 @@
+{
+    "makefile.makefilePath": "",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/vboxraz/Documents/GitHub/NetworksA4",
+            "binaryPath": "/home/vboxraz/Documents/GitHub/NetworksA4/ping",
+            "binaryArgs": []
+        }
+    ]
+}

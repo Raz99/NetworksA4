@@ -1,20 +1,20 @@
-#include <stdio.h>           // Standard input/output definitions
-#include <arpa/inet.h>       // Definitions for internet operations (inet_pton, inet_ntoa)
-#include <netinet/in.h>      // Internet address family (AF_INET, AF_INET6)
-#include <netinet/ip.h>      // Definitions for internet protocol operations (IP header)
-#include <netinet/ip6.h>     // Definitions for IPv6 header
+#include <stdio.h> // Standard input/output definitions
+#include <arpa/inet.h> // Definitions for internet operations (inet_pton, inet_ntoa)
+#include <netinet/in.h> // Internet address family (AF_INET, AF_INET6)
+#include <netinet/ip.h> // Definitions for internet protocol operations (IP header)
+#include <netinet/ip6.h> // Definitions for IPv6 header
 #include <netinet/ip_icmp.h> // Definitions for internet control message protocol operations (ICMP header)
-#include <netinet/icmp6.h>   // Added for IPv6
-#include <poll.h>            // Poll API for monitoring file descriptors (poll)
-#include <errno.h>           // Error number definitions. Used for error handling (EACCES, EPERM)
-#include <string.h>          // String manipulation functions (strlen, memset, memcpy)
-#include <sys/socket.h>      // Definitions for socket operations (socket, sendto, recvfrom)
-#include <sys/time.h>        // Time types (struct timeval and gettimeofday)
-#include <unistd.h>          // UNIX standard function definitions (getpid, close, sleep)
-#include <getopt.h>          // Parser
-#include <stdlib.h>          // For atoi()
-#include <signal.h>          // Signal handling
-#include "ping.h"            // Header file for the program (calculate_checksum function and some constants)
+#include <netinet/icmp6.h> // Added for IPv6
+#include <poll.h> // Poll API for monitoring file descriptors (poll)
+#include <errno.h> // Error number definitions. Used for error handling (EACCES, EPERM)
+#include <string.h> // String manipulation functions (strlen, memset, memcpy)
+#include <sys/socket.h> // Definitions for socket operations (socket, sendto, recvfrom)
+#include <sys/time.h> // Time types (struct timeval and gettimeofday)
+#include <unistd.h> // UNIX standard function definitions (getpid, close, sleep)
+#include <getopt.h> // Parser
+#include <stdlib.h> // For atoi()
+#include <signal.h> // Signal handling
+#include "ping.h" // Header file for the program (calculate_checksum function and some constants)
 
 // Structure to hold ping options
 struct ping_options
@@ -55,10 +55,13 @@ struct ping_stats stats = {
     .start_time = {0, 0}
     };
 
-// Signal handler function to display statistics and exit
+/**
+ * Signal handler function to display statistics and exit.
+ * @param signum The signal number.
+ */
 void display_statistics(int signum)
 {
-    (void)signum; // Explicitly mark parameter as unused
+    (void)signum; // Mark parameter as unused
     struct timeval end_time;
     gettimeofday(&end_time, NULL);
     double total_time = (end_time.tv_sec - stats.start_time.tv_sec) * 1000.0 +
@@ -155,7 +158,7 @@ int parse_arguments(int argc, char *argv[], struct ping_options *options)
         {
         case 'a':
             options->address = optarg; // Store the address argument
-            a_flag = 1;                // Indicate that the address flag is set
+            a_flag = 1; // Indicate that the address flag is set
             break;
         case 't':
             options->type = atoi(optarg); // Convert type argument to integer
@@ -262,24 +265,24 @@ int main(int argc, char *argv[])
         if (options.type == 4)
         {
             struct icmphdr *icmp_header = (struct icmphdr *)buffer;
-            icmp_header->type = ICMP_ECHO;                                                             // Set the type of the ICMP packet to ECHO REQUEST (PING).
-            icmp_header->code = 0;                                                                     // Set the code of the ICMP packet to 0 (As it isn't used in the ECHO type).
-            icmp_header->un.echo.id = htons(getpid());                                                 // Set the ICMP identifier.
-            icmp_header->un.echo.sequence = htons(seq);                                                // Set the sequence number.
-            memcpy(buffer + sizeof(struct icmphdr), msg, payload_size);                                // Copy the payload to the buffer.
-            icmp_header->checksum = 0;                                                                 // Set the checksum of the ICMP packet to 0, as we need to calculate it.
+            icmp_header->type = ICMP_ECHO; // Set the type of the ICMP packet to ECHO REQUEST (PING).
+            icmp_header->code = 0; // Set the code of the ICMP packet to 0 (As it isn't used in the ECHO type).
+            icmp_header->un.echo.id = htons(getpid()); // Set the ICMP identifier.
+            icmp_header->un.echo.sequence = htons(seq); // Set the sequence number.
+            memcpy(buffer + sizeof(struct icmphdr), msg, payload_size); // Copy the payload to the buffer.
+            icmp_header->checksum = 0; // Set the checksum of the ICMP packet to 0, as we need to calculate it.
             icmp_header->checksum = calculate_checksum(buffer, sizeof(struct icmphdr) + payload_size); // Calculate the checksum of the ICMP packet.
         }
 
         else if (options.type == 6)
         {
             struct icmp6_hdr *icmp6_header = (struct icmp6_hdr *)buffer;
-            icmp6_header->icmp6_type = ICMP6_ECHO_REQUEST;                // Set the type of the ICMP packet to ICMP6 ECHO REQUEST (PING).
-            icmp6_header->icmp6_code = 0;                                 // Set the code of the ICMP packet to 0 (As it isn't used in the ECHO type).
-            icmp6_header->icmp6_id = htons(getpid());                     // Set the ICMP identifier.
-            icmp6_header->icmp6_seq = htons(seq);                         // Set the sequence number.
+            icmp6_header->icmp6_type = ICMP6_ECHO_REQUEST; // Set the type of the ICMP packet to ICMP6 ECHO REQUEST (PING).
+            icmp6_header->icmp6_code = 0; // Set the code of the ICMP packet to 0 (As it isn't used in the ECHO type).
+            icmp6_header->icmp6_id = htons(getpid()); // Set the ICMP identifier.
+            icmp6_header->icmp6_seq = htons(seq); // Set the sequence number.
             memcpy(buffer + sizeof(struct icmp6_hdr), msg, payload_size); // Copy the payload to the buffer.
-            icmp6_header->icmp6_cksum = 0;                                // Set the checksum of the ICMP packet to 0, as we need to calculate it.
+            icmp6_header->icmp6_cksum = 0; // Set the checksum of the ICMP packet to 0, as we need to calculate it.
         }
 
         // Calculate the time it takes to send and receive the packet.
@@ -291,14 +294,12 @@ int main(int argc, char *argv[])
         // Send the ICMP packet
         if (options.type == 4)
         {
-            bytes_sent = sendto(sock, buffer, sizeof(struct icmphdr) + payload_size, 0,
-                                (struct sockaddr *)&dest_addr_v4, sizeof(dest_addr_v4));
+            bytes_sent = sendto(sock, buffer, sizeof(struct icmphdr) + payload_size, 0, (struct sockaddr *)&dest_addr_v4, sizeof(dest_addr_v4));
         }
 
         else if (options.type == 6)
         {
-            bytes_sent = sendto(sock, buffer, sizeof(struct icmp6_hdr) + payload_size, 0,
-                                (struct sockaddr *)&dest_addr_v6, sizeof(dest_addr_v6));
+            bytes_sent = sendto(sock, buffer, sizeof(struct icmp6_hdr) + payload_size, 0, (struct sockaddr *)&dest_addr_v6, sizeof(dest_addr_v6));
         }
 
         // If the packet sending fails, print an error message and close the socket
@@ -334,8 +335,7 @@ int main(int argc, char *argv[])
             {
                 struct sockaddr_in source_addr; // Temporary structure to store the source address of the ICMP reply packet.
 
-                int bytes_received = recvfrom(sock, buffer, sizeof(buffer), 0,
-                                              (struct sockaddr *)&source_addr, &(socklen_t){sizeof(source_addr)});
+                int bytes_received = recvfrom(sock, buffer, sizeof(buffer), 0, (struct sockaddr *)&source_addr, &(socklen_t){sizeof(source_addr)});
                 if (bytes_received <= 0)
                 {
                     perror("recvfrom(2)");
@@ -352,18 +352,18 @@ int main(int argc, char *argv[])
                     double rtt = (end.tv_sec - start.tv_sec) * 1000.0 +
                                  (end.tv_usec - start.tv_usec) / 1000.0; // Calculate round-trip time
 
-                    stats.received++;                                            // Increment the received counter
+                    stats.received++; // Increment the received counter
                     stats.min_rtt = (rtt < stats.min_rtt) ? rtt : stats.min_rtt; // Update minimum RTT
                     stats.max_rtt = (rtt > stats.max_rtt) ? rtt : stats.max_rtt; // Update maximum RTT
-                    stats.total_rtt += rtt;                                      // Update total RTT
+                    stats.total_rtt += rtt; // Update total RTT
 
                     // Print the result of the ping request
                     fprintf(stdout, "%d bytes from %s: icmp_seq=%d ttl=%d time=%.2fms\n",
                             bytes_received - ip_header->ihl * 4, // Print the size of the ICMP reply packet
-                            inet_ntoa(source_addr.sin_addr),     // Print source IP address
-                            seq + 1,                             // Print sequence number
-                            ip_header->ttl,                      // Print TTL
-                            rtt);                                // Print round-trip time
+                            inet_ntoa(source_addr.sin_addr), // Print source IP address
+                            seq + 1, // Print sequence number
+                            ip_header->ttl, // Print TTL
+                            rtt); // Print round-trip time
                     seq++;
                 }
             }
@@ -371,11 +371,10 @@ int main(int argc, char *argv[])
             else if (options.type == 6)
             {
                 struct sockaddr_in6 source_addr; // Temporary structure to store the source address of the ICMPv6 reply packet.
-                char addr_str[46];               // Buffer to store the source address as a string
+                char addr_str[46]; // Buffer to store the source address as a string
 
                 // Receive the ICMPv6 reply packet
-                int bytes_received = recvfrom(sock, buffer, sizeof(buffer), 0,
-                                              (struct sockaddr *)&source_addr, &(socklen_t){sizeof(source_addr)});
+                int bytes_received = recvfrom(sock, buffer, sizeof(buffer), 0, (struct sockaddr *)&source_addr, &(socklen_t){sizeof(source_addr)});
                 if (bytes_received <= 0)
                 {
                     perror("recvfrom(2)");
@@ -390,10 +389,10 @@ int main(int argc, char *argv[])
                 {
                     double rtt = (end.tv_sec - start.tv_sec) * 1000.0 + (end.tv_usec - start.tv_usec) / 1000.0; // Calculate round-trip time
 
-                    stats.received++;                                            // Increment the received counter
+                    stats.received++; // Increment the received counter
                     stats.min_rtt = (rtt < stats.min_rtt) ? rtt : stats.min_rtt; // Update minimum RTT
                     stats.max_rtt = (rtt > stats.max_rtt) ? rtt : stats.max_rtt; // Update maximum RTT
-                    stats.total_rtt += rtt;                                      // Update total RTT
+                    stats.total_rtt += rtt; // Update total RTT
 
                     inet_ntop(AF_INET6, &source_addr.sin6_addr, addr_str, 46); // Convert source address to string
 
@@ -401,9 +400,9 @@ int main(int argc, char *argv[])
                     fprintf(stdout, "%d bytes from %s: icmp_seq=%d ttl=%d time=%.2fms\n",
                             bytes_received,
                             addr_str, // Print source address
-                            seq + 1,  // Print sequence number
-                            64,       // Print TTL
-                            rtt);     // Print round-trip time
+                            seq + 1, // Print sequence number
+                            64, // Print TTL
+                            rtt); // Print round-trip time
                     seq++;
                 }
             }
