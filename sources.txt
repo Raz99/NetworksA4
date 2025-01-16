@@ -2,3 +2,5 @@ https://www.tutorialspoint.com/c_standard_library/c_function_exit.htm - exit(1)
 https://en.wikipedia.org/wiki/IPv6_packet - wikipedia page of IPv6
 https://www.imperva.com/learn/performance/time-to-live-ttl/ - info about ttl & size of ttl
 ping.c & ping.h - by Roy the Maniac
+https://he.wikipedia.org/wiki/Traceroute - Traceroute
+https://he.wikipedia.org/wiki/%D7%A4%D7%99%D7%A0%D7%92 - Ping
