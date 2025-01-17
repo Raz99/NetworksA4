@@ -1,10 +1,15 @@
 {
-    "makefile.makefilePath": "",
     "makefile.launchConfigurations": [
         {
-            "cwd": "/home/vboxraz/Documents/GitHub/NetworksA4",
-            "binaryPath": "/home/vboxraz/Documents/GitHub/NetworksA4/ping",
+            "cwd": "/home/vboxraz/Documents/GitHub/NetworksA4/partB",
+            "binaryPath": "/home/vboxraz/Documents/GitHub/NetworksA4/partB/traceroute",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "/home/vboxraz/Documents/GitHub/NetworksA4/partA",
+            "binaryPath": "/home/vboxraz/Documents/GitHub/NetworksA4/partA/ping",
             "binaryArgs": []
         }
-    ]
+    ],
+    "makefile.makefilePath": ""
 }

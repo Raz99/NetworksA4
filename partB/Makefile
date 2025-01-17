@@ -1,8 +1,8 @@
 # Use the gcc compiler.
-CC=gcc
+CC = gcc
 
 # Flags for the compiler. Can also use -g for debugging.
-CFLAGS=-Wall -Wextra
+CFLAGS = -Wall -Wextra
 
 # Header files.
 HEADERS = traceroute.h
@@ -13,10 +13,10 @@ all: traceroute
 # Alias for the default target.
 default: all
 
-// Compile the traceroute program
+# Compile the traceroute program
 traceroute: traceroute.c $(HEADERS)
-    $(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
 # Clean up generated files
 clean:
-    rm -f traceroute
+	rm -f traceroute
